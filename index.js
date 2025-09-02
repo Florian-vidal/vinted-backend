@@ -7,7 +7,14 @@ const cors = require("cors");
 const app = express();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://vinted-florian-vidal.netlify.app"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URI);
