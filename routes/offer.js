@@ -4,16 +4,16 @@ router.post(
   fileUpload(),
   async (req, res) => {
     try {
+      // ✅ On récupère les champs envoyés par le frontend
       const { title, description, price, brand, size, condition, color, city } =
         req.body;
 
       if (!title || !price) {
         return res
           .status(400)
-          .json({ message: "Merci de fournir au minimum un titre et un prix" });
+          .json({ message: "Merci de fournir un titre et un prix" });
       }
 
-      // Création de l'offre
       const newOffer = new Offer({
         product_name: title,
         product_description: description,
@@ -28,7 +28,7 @@ router.post(
         owner: req.user,
       });
 
-      // Gestion de l'image si fournie
+      // ✅ Gestion de l’image
       if (req.files?.picture) {
         const convertedPicture = convertToBase64(req.files.picture);
         const uploadResponse = await cloudinary.uploader.upload(convertedPicture);
